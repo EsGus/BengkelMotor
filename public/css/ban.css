@@ -1,0 +1,278 @@
+:root { --primary-orange: #ff8a00; --secondary-orange: #ff5f00; --bg-gray: #f5f5f5; --text-dark: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-gray); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* NAVBAR */
+        .navbar { background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%); color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(255, 138, 0, 0.3); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { height: 45px; }
+        .logo-text h1 { font-size: 22px; font-weight: 800; }
+        .logo-text p { font-size: 11px; }
+        .nav-links { display: flex; align-items: center; gap: 25px; font-size: 14px; font-weight: 500; }
+        .cart-wrapper { position: relative; font-size: 20px; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: white; color: var(--primary-orange); border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: 800; }
+        .user-section { background: rgba(255,255,255,0.15); padding: 6px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px; }
+        .logout-btn { background: white; border: none; color: var(--primary-orange); font-weight: 700; cursor: pointer; font-size: 12px; padding: 4px 10px; border-radius: 15px; }
+
+        /* CONTENT */
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 10px; flex: 1; }
+        h1 { font-size: 20px; margin-bottom: 15px; border-left: 4px solid var(--primary-orange); padding-left: 10px; color: #444; }
+        
+        .search-box input { 
+            width: 100%; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            border: 1px solid #ddd; 
+            outline: none; 
+            margin-bottom: 20px; 
+            font-size: 13px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .search-box input:focus { border-color: var(--primary-orange); }
+
+        /* --- GRID LAYOUT FIX --- */
+        /* Kita paksa jumlah kolom agar pasti menyamping */
+        .product-grid { 
+            display: grid;
+            gap: 10px;
+            /* Default Mobile: 2 Kolom (Menyamping) */
+            grid-template-columns: repeat(2, 1fr); 
+        }
+
+        /* Tablet: 4 Kolom */
+        @media (min-width: 640px) {
+            .product-grid { grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        }
+
+        /* Desktop: 6 Kolom (Kecil-kecil banyak) */
+        @media (min-width: 1024px) {
+            .product-grid { grid-template-columns: repeat(6, 1fr); gap: 15px; }
+        }
+        
+        /* CARD STYLE (Mirip E-commerce) */
+        .product-card { 
+            background: white; 
+            border: 1px solid #eee; /* Border tipis halus */
+            border-radius: 4px; /* Sudut sedikit tajam ala marketplace */
+            padding: 0; /* Padding diatur di dalam */
+            text-align: left; 
+            transition: 0.2s; 
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .product-card:hover { 
+            border-color: var(--primary-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
+
+        .product-card img { 
+            width: 100%; 
+            aspect-ratio: 1/1; /* Gambar kotak persegi sempurna */
+            object-fit: contain; 
+            background-color: #fff; 
+            padding: 10px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .card-body {
+            padding: 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name { 
+            font-weight: 500; 
+            font-size: 12px; 
+            margin-bottom: 4px; 
+            height: 36px; /* Limit 2 baris */
+            overflow: hidden; 
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        .price { 
+            color: var(--secondary-orange); 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-top: auto; /* Dorong harga ke bawah */
+        }
+
+        /* Footer Kartu (Tombol Beli) */
+        .card-actions {
+            padding: 8px;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        .quantity-control { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            background: #fff; 
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            height: 24px;
+        }
+        .quantity-control button { 
+            width: 24px; height: 100%; border: none; background: #f5f5f5; cursor: pointer; color: #555; font-size: 10px; display: flex; align-items: center; justify-content: center;
+        }
+        .quantity-control button:hover { background: #eee; }
+        .quantity-control input { width: 100%; text-align: center; border: none; font-size: 12px; height: 100%; }
+
+        .buy-btn { 
+            width: 100%; 
+            background: var(--primary-orange); 
+            color: white; 
+            border: none; 
+            padding: 6px 0; 
+            border-radius: 4px; 
+            font-weight: 500; 
+            cursor: pointer; 
+            font-size: 12px;
+        }
+        .buy-btn:hover { background: var(--secondary-orange); }
+        
+        /* Admin Buttons */
+        .mode-active-banner { display: none; background: #333; color: white; text-align: center; padding: 10px; font-size: 12px; }
+        .action-mode-admin { display: none; }
+        .admin-buttons-container { display: flex; gap: 4px; margin-top: 5px; }
+        .btn-edit-card { flex: 1; background: #ff9800; color: white; padding: 4px; border-radius: 4px; font-size: 10px; border:none; cursor: pointer; text-align: center;}
+        .btn-delete-card { flex: 1; background: #d32f2f; color: white; border: none; padding: 4px; border-radius: 4px; font-size: 10px; cursor: pointer; }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background-color: #ffffff;
+            border-top: 5px solid var(--primary-orange);
+            padding-top: 50px;
+            font-size: 14px;
+            color: #666;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: #666;
+            font-weight: 400;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary-orange);
+            padding-left: 5px;
+        }
+
+        .footer-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo-box {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            width: 60px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px;
+            transition: 0.3s;
+        }
+        
+        .logo-box:hover {
+            border-color: var(--primary-orange);
+            transform: translateY(-2px);
+        }
+        
+        .logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .logo-box.qris {
+            width: auto;
+            padding: 0 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .social-links li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .social-links i {
+            width: 20px;
+            text-align: center;
+            color: #888;
+            transition: 0.3s;
+        }
+        
+        .social-links li a:hover i {
+            color: var(--primary-orange);
+        }
+
+        .copyright {
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 13px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container { flex-direction: column; align-items: stretch; gap: 15px; }
+            .search-wrapper { max-width: 100%; margin: 10px 0; }
+            .nav-links { justify-content: space-between; overflow-x: auto; padding-bottom: 5px; }
+            .hero-content { flex-direction: column-reverse; text-align: center; }
+            .hero-text { padding-right: 0; }
+            .footer-content { grid-template-columns: 1fr 1fr; gap: 30px; }
+        }
+        @media (max-width: 480px) {
+            .footer-content { grid-template-columns: 1fr; }
+            .logo-text h1 { font-size: 18px; }
+            .logo-icon { height: 35px; }
+        }

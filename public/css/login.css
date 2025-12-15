@@ -1,0 +1,189 @@
+:root {
+  --orange: #ff7f00;
+  --light-orange: #ffb36b;
+  --text-dark: #222;
+  --text-gray: #666;
+  --card-bg: rgba(255, 255, 255, 0.9);
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* LAYOUT UTAMA */
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* BAGIAN KIRI */
+.left-section {
+  flex: 1.2;
+  position: relative;
+  background: url("{{ asset('img/login axera.png') }}") center/cover no-repeat;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 60px;
+  color: #fff;
+}
+
+.left-section .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.brand-text {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-text h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+.brand-text p {
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+/* BAGIAN KANAN */
+.right-section {
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  padding: 40px;
+}
+
+/* CARD LOGIN */
+.form-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 60px 45px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.form-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* TABS LOGIN / SIGNUP */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 35px;
+}
+
+.tab-item {
+  text-decoration: none;
+  color: var(--text-gray);
+  font-size: 1.1em;
+  font-weight: 500;
+  padding-bottom: 10px;
+  transition: 0.3s;
+}
+
+.tab-item.active {
+  color: var(--text-dark);
+  font-weight: 600;
+  border-bottom: 3px solid var(--orange);
+}
+
+.tab-item:hover {
+  color: var(--orange);
+}
+
+/* FORM INPUT */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 0.95em;
+  color: var(--text-dark);
+  background: #fff;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 6px rgba(255, 127, 0, 0.4);
+}
+
+/* BUTTON */
+.login-form button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(to right, var(--orange), var(--light-orange));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.login-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 127, 0, 0.3);
+}
+
+/* PESAN ERROR */
+.error {
+  background: rgba(255, 100, 100, 0.1);
+  border-left: 4px solid #ff4d4d;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  color: #d40000;
+  text-align: left;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .left-section {
+    flex: none;
+    height: 40vh;
+    padding: 40px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right-section {
+    flex: none;
+    height: 60vh;
+  }
+
+  .brand-text h1 {
+    font-size: 2rem;
+  }
+}

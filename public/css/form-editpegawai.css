@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9; /* Background abu-abu muda */
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Link Kembali */
+.header-link a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+    font-size: 14px;
+}
+.header-link a:hover {
+    text-decoration: underline;
+}
+
+/* Judul */
+.form-title {
+    text-align: center;
+    margin: 20px 0 30px;
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+}
+
+/* Kotak Form Putih */
+.form-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+/* Input Group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box; /* Agar padding tidak melebarkan input */
+    transition: 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #ff8113;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 129, 19, 0.1);
+}
+
+/* Preview Foto */
+.current-photo img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+/* Tombol Simpan */
+.btn-simpan {
+    display: block;
+    width: 100%;
+    background-color: #ff9800;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-simpan:hover {
+    background-color: #e68900;
+    box-shadow: 0 4px 10px rgba(230, 137, 0, 0.3);
+}
