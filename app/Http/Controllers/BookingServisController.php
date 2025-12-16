@@ -7,13 +7,13 @@ use App\Models\BookingServis;
 
 class BookingServisController extends Controller
 {
-    // 1. Tampilkan Form
+    // 1. Tampilkan Form Booking (User)
     public function create()
     {
-        return view('service_form');
+        return view('service_form'); // Pastikan nama file view ini benar
     }
 
-    // 2. Simpan Data dari Form
+    // 2. Simpan Booking Baru (User)
     public function store(Request $request)
     {
         $request->validate([
@@ -32,27 +32,51 @@ class BookingServisController extends Controller
             'nopol' => $request->nopol,
             'tipe_motor' => $request->tipe_motor,
             'tgl_servis' => $request->tgl_servis,
-            'jam_servis' => $request->jam . ':' . $request->menit, // Gabung jam & menit
-            'keluhan' => $request->keluhan
+            'jam_servis' => $request->jam . ':' . $request->menit,
+            'keluhan' => $request->keluhan,
+            'status' => 'Menunggu'
         ]);
 
-        return redirect()->route('service.riwayat')->with('success', 'Booking berhasil dikirim!');
+        return redirect()->route('service.riwayat')->with('success', 'Booking berhasil dikirim! Menunggu konfirmasi Admin.');
     }
 
-    // 3. Tampilkan Riwayat (Daftar semua booking)
+    // 3. Tampilkan Riwayat (Admin & User)
     public function index()
     {
-        // Ambil data terbaru paling atas
-        $bookings = BookingServis::orderBy('created_at', 'desc')->get();
+        // Urutkan: Menunggu paling atas, lalu Tanggal terbaru
+        $bookings = BookingServis::orderByRaw("FIELD(status, 'Menunggu', 'Proses', 'Selesai', 'Ditolak')")
+                    ->orderBy('tgl_servis', 'desc')
+                    ->get();
+                    
         return view('service_riwayat', compact('bookings'));
     }
     
-    // 4. Update Status (Misal Admin klik "Selesai")
+    // 4. TERIMA BOOKING (Admin) -> Ubah status jadi 'Proses'
     public function updateStatus($id)
     {
-        $booking = BookingServis::find($id);
-        $booking->status = 'Selesai';
+        $booking = BookingServis::findOrFail($id);
+        $booking->status = 'Proses';
         $booking->save();
-        return back()->with('success', 'Status diperbarui!');
+
+        return redirect()->route('service.riwayat')->with('success', 'Booking DITERIMA. Silakan tunggu pelanggan datang.');
+    }
+
+    // 5. TOLAK BOOKING (Admin) -> Ubah status jadi 'Ditolak'
+    public function tolak($id)
+    {
+        $booking = BookingServis::findOrFail($id);
+        $booking->status = 'Ditolak';
+        $booking->save();
+
+        return redirect()->route('service.riwayat')->with('error', 'Booking DITOLAK.');
+    }
+
+    // 6. HAPUS PERMANEN (Admin)
+    public function destroy($id)
+    {
+        $booking = BookingServis::findOrFail($id);
+        $booking->delete();
+
+        return redirect()->route('service.riwayat')->with('success', 'Data booking dihapus permanen.');
     }
 }

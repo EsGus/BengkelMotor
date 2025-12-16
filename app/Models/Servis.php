@@ -9,10 +9,12 @@ class Servis extends Model
 {
     use HasFactory;
 
-    protected $table = 'servis'; // Nama tabel di database
-    protected $primaryKey = 'idServis'; // Primary key
+    protected $table = 'servis'; 
+    protected $primaryKey = 'idServis'; 
 
     protected $fillable = [
+        'nama_pelanggan', // BARU
+        'no_hp',          // BARU
         'idMotor',
         'idMontir',
         'idSparepart',
@@ -22,16 +24,16 @@ class Servis extends Model
         'keluhan'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true; // Set true karena ada timestamps() di migrasi
 
     public function motor()
     {
-        return $this->belongsTo(Motor::class, 'idMotor', 'idMotor');
+        return $this->belongsTo(Motor::class, 'idMotor');
     }
 
     public function montir()
     {
-        return $this->belongsTo(Montir::class, 'idMontir', 'idMontir');
+        return $this->belongsTo(Montir::class, 'idMontir');
     }
 
     public function sparepart()
