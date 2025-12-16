@@ -13,9 +13,17 @@ class Pelanggan extends Model
 
     protected $fillable = [
         'user_id',
+        'nama_pelanggan',
         'no_hp',
         'alamat',
-        'jenis_motor', // <-- Pastikan ada
-        'no_polisi',   // <-- Pastikan ada
+        'jenis_motor', 
+        'namaPelanggan', // <-- Tambahkan jika Anda punya kolom namaPelanggan manual
+        'no_polisi',
     ];
+
+    // --- TAMBAHKAN INI ---
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

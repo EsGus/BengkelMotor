@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AXERA MOTOR - Home</title>
     <link rel="icon" href="{{ asset('img/logo.png') }}">
-    <!-- Menggunakan Font Poppins agar lebih modern -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome untuk Icon Footer -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="navbar">
     <div class="nav-container">
         
-        <!-- Logo -->
         <a href="{{ route('home') }}" class="logo">
             <img src="{{ asset('img/bike.png') }}" alt="Logo Motor" class="logo-icon">
             <div class="logo-text">
@@ -28,18 +24,15 @@
             </div>
         </a>
 
-        <!-- Search Bar -->
         <div class="search-wrapper">
             <input type="text" class="search-bar" placeholder="Cari sparepart, oli, atau layanan...">
             <button class="search-btn"><i class="fas fa-search"></i></button>
         </div>
 
-        <!-- Menu Kanan -->
         <nav class="nav-links">
             <a href="{{ route('service.form') }}" class="menu-item">Booking Servis</a>
             <a href="{{ route('pegawai.index') }}" class="menu-item">Info Bengkel</a>
 
-            <!-- Cart -->
             <a href="{{ route('cart.show') }}" class="cart-wrapper" title="Keranjang Belanja">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count">
@@ -51,7 +44,6 @@
                 </span>
             </a>
 
-            <!-- User Auth -->
             <div class="user-section">
                 @auth
                     <i class="fas fa-user-circle" style="font-size: 18px; color: white;"></i>
@@ -68,7 +60,44 @@
     </div>
 </header>
 
-<!-- HERO SECTION -->
+@auth
+    @if(Auth::user()->role == 'admin')
+    <section class="admin-panel" style="background-color: #f8f9fa; padding: 30px 0; border-bottom: 2px solid #ddd;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h2 style="color: #333; margin-bottom: 20px;">👨‍🔧 Admin Dashboard</h2>
+            
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                
+                <a href="{{ route('laporan.index') }}" style="background: #2196F3; color: white; text-decoration: none; padding: 15px 25px; border-radius: 8px; display: inline-block; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <i class="fas fa-file-invoice-dollar" style="font-size: 24px; margin-bottom: 8px;"></i><br>
+                    <b>Laporan Keuangan</b>
+                </a>
+
+                <a href="{{ route('servis.index') }}" style="background: #4CAF50; color: white; text-decoration: none; padding: 15px 25px; border-radius: 8px; display: inline-block; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <i class="fas fa-tools" style="font-size: 24px; margin-bottom: 8px;"></i><br>
+                    <b>Kelola Servis (Fisik)</b>
+                </a>
+
+                <a href="{{ route('service.riwayat') }}" style="background: #FF9800; color: white; text-decoration: none; padding: 15px 25px; border-radius: 8px; display: inline-block; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <i class="fas fa-calendar-alt" style="font-size: 24px; margin-bottom: 8px;"></i><br>
+                    <b>Cek Booking Online</b>
+                </a>
+
+                 <a href="{{ route('motor.index') }}" style="background: #9C27B0; color: white; text-decoration: none; padding: 15px 25px; border-radius: 8px; display: inline-block; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <i class="fas fa-motorcycle" style="font-size: 24px; margin-bottom: 8px;"></i><br>
+                    <b>Master Motor</b>
+                </a>
+
+                 <a href="{{ route('pelanggan.index') }}" style="background: #607D8B; color: white; text-decoration: none; padding: 15px 25px; border-radius: 8px; display: inline-block; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <i class="fas fa-users" style="font-size: 24px; margin-bottom: 8px;"></i><br>
+                    <b>Data Pelanggan</b>
+                </a>
+
+            </div>
+        </div>
+    </section>
+    @endif
+@endauth
 <section class="hero">
     <div class="hero-content">
         <div class="hero-text">
@@ -88,7 +117,6 @@
     </div>
 </section>
 
-<!-- MAIN MENU / KATEGORI -->
 <main>
     <div class="section-header">
         <h2 class="section-title">KATEGORI PRODUK & LAYANAN</h2>
@@ -117,10 +145,8 @@
     </div>
 </main>
 
-<!-- FOOTER -->
 <footer>
     <div class="footer-content">
-        <!-- Kolom 1 -->
         <div class="footer-col">
             <h3>Layanan Pelanggan</h3>
             <ul>
@@ -132,7 +158,6 @@
             </ul>
         </div>
 
-        <!-- Kolom 2 -->
         <div class="footer-col">
             <h3>Jelajahi Axera</h3>
             <ul>
@@ -144,7 +169,6 @@
             </ul>
         </div>
 
-        <!-- Kolom 3 -->
         <div class="footer-col">
             <h3>Metode Pembayaran</h3>
             <div class="footer-logos">
@@ -157,7 +181,6 @@
             </div>
         </div>
 
-        <!-- Kolom 4 -->
         <div class="footer-col">
             <h3>Ikuti Kami</h3>
             <ul class="social-links">
