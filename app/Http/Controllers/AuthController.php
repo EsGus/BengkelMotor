@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Servis; 
+use App\Models\Servis;
 use Illuminate\Support\Facades\Redirect;
-// WAJIB IMPORT MODEL CART
-use App\Models\Cart; 
+use App\Models\Cart;
 
 class AuthController extends Controller
 {
-    // ... (fungsi login, logout, register, showLoginForm, showForm, store biarkan saja) ...
+    // ==============================
+    // AUTH
+    // ==============================
 
     public function showLoginForm()
     {
@@ -29,9 +29,7 @@ class AuthController extends Controller
             return redirect()->intended('/home');
         }
 
-        return back()->withErrors([
-            'username' => 'Username atau password salah',
-        ]);
+        return back()->withErrors(['username' => 'Username atau password salah']);
     }
 
     public function logout(Request $request)
@@ -40,7 +38,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login'); 
+        return redirect()->route('login');
     }
 
     public function showForm()
@@ -51,13 +49,13 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:50|unique:users,username',
-            'password' => 'required|string|min:6|confirmed',
+            'name' => 'required',
+            'username' => 'required|unique:users,username',
+            'password' => 'required|confirmed|min:6',
         ]);
 
         User::create([
-            'name'     => $request->name,
+            'name' => $request->name,
             'username' => $request->username,
             'password' => bcrypt($request->password),
         ]);
@@ -65,72 +63,92 @@ class AuthController extends Controller
         return back()->with('success', 'Akun berhasil dibuat!');
     }
 
+   // ==============================
+// PAYMENT METHOD
+// ==============================
+public function paymentMethod()
+{
+    $items = session('checkout_items', []);
+    $total = session('checkout_total', 0);
+
+    if (empty($items)) {
+        return redirect()->route('cart.show');
+    }
+
+    return view('payment_method', compact('items', 'total'));
+}
+
+public function choosePaymentMethod(Request $request)
+{
+    $request->validate([
+        'method' => 'required'
+    ]);
+
+    session(['payment_method' => $request->method]);
+
+    if ($request->method === 'qris') {
+        return redirect()->route('payment.qris');
+    }
+
+    if ($request->method === 'transfer') {
+        return redirect()->route('payment.transfer');
+    }
+
+    return redirect()->route('payment'); // cash
+}
+
+// ==============================
+// PAYMENT PAGE
+// ==============================
+public function payment()
+{
+    $items = session('checkout_items', []);
+    $total = session('checkout_total', 0);
+
+    return view('payment', compact('items', 'total'));
+}
+
+public function qris()
+{
+    $items = session('checkout_items', []);
+    $total = session('checkout_total', 0);
+
+    return view('qris', compact('items', 'total'));
+}
+
+public function transfer()
+{
+    $items = session('checkout_items', []);
+    $total = session('checkout_total', 0);
+
+    return view('transfer', compact('items', 'total'));
+}
+
+public function processPayment()
+{
+    if (Auth::check()) {
+        Cart::where('user_id', Auth::id())->delete();
+    }
+
+    session()->forget([
+        'cart',
+        'checkout_items',
+        'checkout_total',
+        'payment_method'
+    ]);
+
+    return redirect()->route('payment.success');
+}
+
+public function paymentSuccess()
+{
+    return view('payment-success');
+}
+
     // ==============================
-    // FITUR PAYMENT
-    // ==============================
-    
-    public function payment()
-    {
-        $items = session('checkout_items', []);
-        $total = session('checkout_total', 0);
-
-        if (empty($items)) {
-            return redirect()->route('cart.show')->with('error', 'Keranjang belanja kosong');
-        }
-
-        return view('payment', compact('items', 'total'));
-    }
-
-    public function processPayment(Request $request)
-    {
-        // 1. (Opsional) Simpan ke tabel Transaksi/Detail Transaksi di sini
-        // ...
-        
-        // 2. HAPUS DATA DARI DATABASE CART (INI YANG KURANG KEMARIN)
-        if (Auth::check()) {
-            Cart::where('user_id', Auth::id())->delete();
-        }
-
-        // 3. Hapus session keranjang
-        session()->forget(['cart', 'checkout_items', 'checkout_total', 'payment_method']);
-        
-        return redirect()->route('payment.success')->with('success', 'Pembayaran berhasil!');
-    }
-
-    public function paymentSuccess()
-    {
-        return view('payment-success');
-    }
-
-    // ==============================
-    // FITUR PEMILIHAN METODE PEMBAYARAN
+    // SERVICE
     // ==============================
 
-    public function paymentMethod(Request $request)
-    {
-        $total = session('checkout_total', 0);
-        $items = session('checkout_items', []);
-
-        if ($total == 0 || empty($items)) {
-            return redirect()->route('cart.show');
-        }
-
-        return view('payment_method', compact('items', 'total'));
-    }
-
-    public function choosePaymentMethod(Request $request)
-    {
-        $request->validate([
-            'method' => 'required|string'
-        ]);
-
-        $method = $request->method;
-        session(['payment_method' => $method]);
-
-        return redirect()->route('payment'); 
-    }
-
-    // ... (fungsi serviceCreate dan serviceView tetap sama) ...
     public function serviceCreate()
     {
         return view('formservice');
@@ -139,17 +157,17 @@ class AuthController extends Controller
     public function serviceView(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'no_hp' => 'required|string|max:15',
-            'nopol' => 'required|string|max:10',
-            'tipe_motor' => 'required|string|max:50',
+            'nama' => 'required',
+            'no_hp' => 'required',
+            'nopol' => 'required',
+            'tipe_motor' => 'required',
             'tgl_servis' => 'required|date',
-            'jam' => 'required|string',
-            'menit' => 'required|string',
-            'keluhan' => 'nullable|string',
+            'jam' => 'required',
+            'menit' => 'required',
+            'keluhan' => 'nullable',
         ]);
 
-        $waktu_servis = $validated['tgl_servis'] . ' ' . $validated['jam'] . ':' . $validated['menit'] . ':00';
+        $waktu_servis = $validated['tgl_servis'].' '.$validated['jam'].':'.$validated['menit'].':00';
 
         try {
             Servis::create([
@@ -161,7 +179,7 @@ class AuthController extends Controller
                 'keluhan' => $validated['keluhan'],
             ]);
         } catch (\Exception $e) {
-            return Redirect::back()->with('error', 'Gagal menyimpan data. Silakan coba lagi.');
+            return Redirect::back()->with('error', 'Gagal menyimpan data');
         }
 
         return redirect()->route('home')->with('success', 'Data servis berhasil dikirim!');

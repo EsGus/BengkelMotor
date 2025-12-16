@@ -94,3 +94,28 @@ Route::middleware(['auth', 'App\Http\Middleware\IsAdmin'])->group(function () {
     Route::put('/pegawai/{id}', [PegawaiController::class, 'update'])->name('pegawai.update');
     Route::delete('/pegawai/{id}', [PegawaiController::class, 'destroy'])->name('pegawai.destroy');
 });
+
+// ================================
+// ALUR CHECKOUT & PEMBAYARAN
+// ================================
+
+Route::get('/payment-method', [AuthController::class, 'paymentMethod'])
+    ->name('payment.method');
+
+Route::post('/choose-payment-method', [AuthController::class, 'choosePaymentMethod'])
+    ->name('choose.payment.method');
+
+Route::get('/payment', [AuthController::class, 'payment'])
+    ->name('payment');
+
+Route::get('/payment/qris', [AuthController::class, 'qris'])
+    ->name('payment.qris');
+
+Route::get('/payment/transfer', [AuthController::class, 'transfer'])
+    ->name('payment.transfer');
+
+Route::post('/payment/process', [AuthController::class, 'processPayment'])
+    ->name('payment.process');
+
+Route::get('/payment/success', [AuthController::class, 'paymentSuccess'])
+    ->name('payment.success');
