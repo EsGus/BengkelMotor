@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 15, 2025 at 08:49 AM
+-- Generation Time: Dec 17, 2025 at 03:19 AM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.16
 
@@ -43,8 +43,7 @@ CREATE TABLE `ban` (
 
 INSERT INTO `ban` (`idBan`, `namaBan`, `stok`, `harga`, `gambar`, `created_at`, `updated_at`) VALUES
 (1, 'FDR TL GENZI PRO Ring 14', 15, 212000.00, 'ban1.png', NULL, NULL),
-(2, 'IRC Tubeless Ring 14', 15, 195000.00, 'ban2.png', NULL, NULL),
-(3, 'FDR TT/TL FLEMMO Ring 14 Ban Motor Tube Type dan Tubeless Accessories Motorcycle Rasio - 80/90-14 TL', 10, 225000.00, NULL, NULL, NULL);
+(2, 'IRC Tubeless Ring 14', 15, 195000.00, 'ban2.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -61,7 +60,7 @@ CREATE TABLE `booking_servis` (
   `tgl_servis` date NOT NULL,
   `jam_servis` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keluhan` text COLLATE utf8mb4_unicode_ci,
-  `status` enum('Menunggu','Selesai') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu',
+  `status` enum('Menunggu','Proses','Selesai','Ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -71,12 +70,7 @@ CREATE TABLE `booking_servis` (
 --
 
 INSERT INTO `booking_servis` (`id`, `nama_pelanggan`, `no_hp`, `nopol`, `tipe_motor`, `tgl_servis`, `jam_servis`, `keluhan`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Esta', '089530840095', '123123141', 'Honda Beat', '2025-12-02', '12:00', NULL, 'Selesai', '2025-11-30 13:26:05', '2025-11-30 13:27:29'),
-(2, 'Estha Gusti Ubanggi', '01241414', '148142746', 'Honda Brio', '2025-12-12', '14:00', NULL, 'Selesai', '2025-12-01 09:56:52', '2025-12-01 09:57:12'),
-(3, 'hdiowjfqekfeq', 'dahdhqke193', 'a8318741', 'duqghdq', '4240-02-08', '12:45', NULL, 'Selesai', '2025-12-02 09:08:01', '2025-12-02 18:56:01'),
-(4, 'Michael Jery', '0987423748', 'B 1234 XC', 'Vario', '2025-12-12', '11:30', 'Ban Motor Pecah', 'Menunggu', '2025-12-03 01:28:07', '2025-12-03 01:28:07'),
-(5, 'Michael Jerry', '9898414', 'AB 64714 XC', 'Honda', '2025-12-11', '11:15', 'Ban pecah', 'Selesai', '2025-12-03 01:32:03', '2025-12-03 01:57:27'),
-(6, 'Michael Jerry', '9898414', 'AB 64714 XC', 'Honda', '2025-12-11', '16:30', 'Ban pecah', 'Menunggu', '2025-12-03 01:55:53', '2025-12-03 01:55:53');
+(1, 'Esta', '089530840095', 'AB 64714 XC', 'Beat', '2025-12-17', '08:00', 'Ban pecah', 'Ditolak', '2025-12-16 19:50:27', '2025-12-16 19:52:04');
 
 -- --------------------------------------------------------
 
@@ -118,14 +112,6 @@ CREATE TABLE `carts` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `carts`
---
-
-INSERT INTO `carts` (`id`, `user_id`, `product_id`, `product_type`, `qty`, `created_at`, `updated_at`) VALUES
-(29, 2, 3, 'ban', 1, '2025-12-02 13:38:03', '2025-12-02 13:38:03'),
-(33, 4, 2, 'oli', 1, '2025-12-03 01:23:19', '2025-12-03 01:23:19');
-
 -- --------------------------------------------------------
 
 --
@@ -149,8 +135,8 @@ CREATE TABLE `detail_transaksi` (
 --
 
 INSERT INTO `detail_transaksi` (`id`, `id_transaksi`, `id_produk`, `jenis_produk`, `jumlah`, `harga_saat_transaksi`, `subtotal`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'oli', 1, 62000.00, 62000.00, '2025-11-30 13:06:06', '2025-11-30 13:06:06'),
-(2, 1, 1, 'ban', 1, 212000.00, 212000.00, '2025-11-30 13:06:06', '2025-11-30 13:06:06');
+(1, 1, 1, 'oli', 1, 62000.00, 62000.00, '2025-12-16 19:46:57', '2025-12-16 19:46:57'),
+(2, 1, 1, 'ban', 1, 212000.00, 212000.00, '2025-12-16 19:46:57', '2025-12-16 19:46:57');
 
 -- --------------------------------------------------------
 
@@ -189,7 +175,7 @@ CREATE TABLE `gear` (
 --
 
 INSERT INTO `gear` (`idGear`, `namaGear`, `stok`, `harga`, `gambar`, `created_at`, `updated_at`) VALUES
-(1, 'Gear Set Girset Komplit Honda', 10, 127000.00, 'gear1.png', NULL, NULL);
+(1, 'Gear Set Girset Komplit Honda', 10, 126500.00, 'gear1.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -283,8 +269,55 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2025_11_30_163647_create_olis_table', 1),
 (15, '2025_11_30_164510_create_bans_table', 1),
 (16, '2025_11_30_192908_add_role_to_users_table', 1),
-(17, '2025_12_02_140627_create_pegawais_table', 2),
-(18, '2025_12_02_161520_create_pegawais_table', 3);
+(17, '2025_12_02_161520_create_pegawais_table', 1),
+(18, '2025_12_15_220412_create_servis_table', 1),
+(19, '2025_12_16_171407_create_motors_table', 1),
+(20, '2025_12_16_171408_create_montirs_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `montirs`
+--
+
+CREATE TABLE `montirs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keahlian` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `no_hp` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `montirs`
+--
+
+INSERT INTO `montirs` (`id`, `nama`, `keahlian`, `no_hp`, `created_at`, `updated_at`) VALUES
+(1, 'Pak Slamet', 'Kepala Mekanik', '081222333444', '2025-12-16 19:46:56', '2025-12-16 19:46:56'),
+(2, 'Mas Joko', 'Spesialis Matic', '081555666777', '2025-12-16 19:46:56', '2025-12-16 19:46:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `motors`
+--
+
+CREATE TABLE `motors` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nama_motor` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipe_motor` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `motors`
+--
+
+INSERT INTO `motors` (`id`, `nama_motor`, `tipe_motor`, `created_at`, `updated_at`) VALUES
+(1, 'Honda Beat', 'Matic', '2025-12-16 19:46:56', '2025-12-16 19:46:56'),
+(2, 'Yamaha NMAX', 'Matic', '2025-12-16 19:46:56', '2025-12-16 19:46:56');
 
 -- --------------------------------------------------------
 
@@ -343,12 +376,8 @@ CREATE TABLE `pegawais` (
 --
 
 INSERT INTO `pegawais` (`id`, `nama`, `jabatan`, `email`, `foto`, `created_at`, `updated_at`) VALUES
-(1, 'Yola Valery', 'CEO AXERA MOTOR', 'yola@example.com', 'img/marsya.jpeg', '2025-12-02 09:18:53', '2025-12-02 09:18:53'),
-(4, 'Intan Ayu Wibisono', 'Kasir', 'intan@example.com', 'img/putri.jpeg', '2025-12-02 09:20:09', '2025-12-02 09:52:55'),
-(5, 'Yola Valery', 'CEO AXERA MOTOR', 'yola@example.com', 'img/marsya.jpeg', '2025-12-02 09:43:55', '2025-12-02 09:43:55'),
-(6, 'Rian Saputra', 'Montir', 'rian@example.com', 'img/jcwk.jpeg', '2025-12-02 09:43:56', '2025-12-02 09:43:56'),
-(7, 'Intan Ayu', 'Kasir', 'intan@example.com', 'img/putri.jpeg', '2025-12-02 09:43:57', '2025-12-02 09:43:57'),
-(8, 'Viana', 'Co Kepala Bengkel', 'viana@gmail.com', 'img/no-image.jpg', '2025-12-02 10:02:19', '2025-12-02 10:02:19');
+(1, 'Intan Ayu Purwasari', 'Co Kepala Bengkel', 'intanayu@gmail.com', 'img/1765940985_putri.jpeg', '2025-12-16 20:09:45', '2025-12-16 20:09:45'),
+(2, 'Viana Alveria', 'CO Kepala Bengkel', 'vianaalveria@gmail.com', 'img/no-image.jpg', '2025-12-16 20:10:06', '2025-12-16 20:10:06');
 
 -- --------------------------------------------------------
 
@@ -358,11 +387,12 @@ INSERT INTO `pegawais` (`id`, `nama`, `jabatan`, `email`, `foto`, `created_at`, 
 
 CREATE TABLE `pelanggans` (
   `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `nama_pelanggan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `no_hp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_motor` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `no_polisi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jenis_motor` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_polisi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -371,8 +401,9 @@ CREATE TABLE `pelanggans` (
 -- Dumping data for table `pelanggans`
 --
 
-INSERT INTO `pelanggans` (`id`, `user_id`, `no_hp`, `alamat`, `jenis_motor`, `no_polisi`, `created_at`, `updated_at`) VALUES
-(1, 1, '081234567890', 'Yogyakarta', 'Vario 150', 'AB 1234 XY', '2025-11-30 13:06:06', '2025-11-30 13:06:06');
+INSERT INTO `pelanggans` (`id`, `user_id`, `nama_pelanggan`, `no_hp`, `alamat`, `jenis_motor`, `no_polisi`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Estha Gusti', '081234567890', 'Yogyakarta', 'Vario 150', 'AB 1234 XY', '2025-12-16 19:46:57', '2025-12-16 19:46:57'),
+(2, NULL, 'Budi Santoso (Umum)', '081999888777', 'Sleman, Yogyakarta', 'Supra X 125', 'AB 5555 ZZ', '2025-12-16 19:46:57', '2025-12-16 19:46:57');
 
 -- --------------------------------------------------------
 
@@ -397,7 +428,36 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id`, `id_kategori`, `nama_produk`, `harga`, `stok`, `deskripsi`, `gambar`, `created_at`, `updated_at`) VALUES
-(1, 5, 'Biaya Jasa Pasang / Servis', 14000.00, 999, NULL, 'jasa.png', '2025-11-30 13:06:05', '2025-11-30 13:06:05');
+(1, 5, 'Biaya Jasa Pasang / Servis', 14000.00, 999, NULL, 'jasa.png', '2025-12-16 19:46:56', '2025-12-16 19:46:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `servis`
+--
+
+CREATE TABLE `servis` (
+  `idServis` bigint UNSIGNED NOT NULL,
+  `nama_pelanggan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_hp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idMotor` bigint UNSIGNED DEFAULT NULL,
+  `idMontir` bigint UNSIGNED DEFAULT NULL,
+  `idSparepart` bigint UNSIGNED DEFAULT NULL,
+  `tanggalServis` date NOT NULL,
+  `totalHarga` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `jumlahSparepart` int NOT NULL DEFAULT '0',
+  `keluhan` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `servis`
+--
+
+INSERT INTO `servis` (`idServis`, `nama_pelanggan`, `no_hp`, `idMotor`, `idMontir`, `idSparepart`, `tanggalServis`, `totalHarga`, `jumlahSparepart`, `keluhan`, `created_at`, `updated_at`) VALUES
+(1, 'Budi Santoso (Umum)', '081999888777', 1, 1, NULL, '2025-12-17', 150000.00, 0, 'Ganti Oli & Servis Ringan', '2025-12-16 19:46:57', '2025-12-16 19:46:57'),
+(2, 'Estha Gusti Ubanggi', '089530840095', 2, 2, 3, '2025-12-17', 290000.00, 3, 'Ban pecah', '2025-12-16 19:53:46', '2025-12-16 19:53:46');
 
 -- --------------------------------------------------------
 
@@ -419,10 +479,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('6dT2qlV5IRfn9mpTxnEWtCFt4rFG70K5FhNSPm5X', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRWRETzU1N0p3bks1eEhaQ1VMajlrSm9wUkZ4VkY2R2xaaGtWMTN3diI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ob21lIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1764752305),
-('bi4xh2I2NyQ6y5GI2ez9iztZ5glNIV39mQxVMeRe', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidnZFajY4NlpZbmphSGl6Z1V6TmpNRFhPTUtZM3EzNDhvZXhkQ0NiWiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=', 1764750513),
-('ubbh13zHqLVcqMoy8mRU5vBpmHPb1vHEG6hPpWmL', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiYWpjMjMyRzg2WHpLWWxyVFpKUTRuZ0kzV1ZMVWNvTGlxUzVLbjRIWSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ob21lIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1765788446),
-('xt6MYIXO0imjtZSLD3v3a3IhW0k03GJphVT3E6vC', 7, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNDhNSm10Wkxnd3lrMFJwVGNlZ1BrVWhMZGRTaWNUUkc4SGJTZFBuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vYmVuZ2tlbG1vdG9yLnRlc3QvYmFuIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Nzt9', 1764953818);
+('hpgDAww80qyTs5tSIQCGr3bwHJ99kyKgm3Vii7g3', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiOUZHWGY2WHZZbXFjQjhaaUo5TFkyOHZzTjA5MUdPNkNFekpvbUVtWCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ob21lIjtzOjU6InJvdXRlIjtzOjQ6ImhvbWUiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=', 1765941010);
 
 -- --------------------------------------------------------
 
@@ -445,9 +502,14 @@ CREATE TABLE `spareparts` (
 --
 
 INSERT INTO `spareparts` (`idSparepart`, `namaSparepart`, `stok`, `harga`, `gambar`, `created_at`, `updated_at`) VALUES
+(1, 'Suku Cadang Motor Generik 1', 15, 60000.00, 'spar1.png', NULL, NULL),
 (2, 'Suku Cadang Motor Generik 2', 15, 70000.00, 'spar2.png', NULL, NULL),
-(3, 'Suku Cadang Motor Generik 3', 15, 80000.00, 'spar3.png', NULL, NULL),
-(5, 'Suku Cadang Motor Generik 5', 15, 100000.00, 'spar5.png', NULL, NULL);
+(3, 'Suku Cadang Motor Generik 3', 12, 80000.00, 'spar3.png', NULL, NULL),
+(4, 'Suku Cadang Motor Generik 4', 15, 90000.00, 'spar4.png', NULL, NULL),
+(5, 'Suku Cadang Motor Generik 5', 15, 100000.00, 'spar5.png', NULL, NULL),
+(6, 'Suku Cadang Motor Generik 6', 15, 110000.00, 'spar6.png', NULL, NULL),
+(7, 'Suku Cadang Motor Generik 7', 15, 120000.00, 'spar7.png', NULL, NULL),
+(8, 'Suku Cadang Motor Generik 8', 15, 130000.00, 'spar8.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -472,7 +534,7 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id`, `user_id`, `tanggal_transaksi`, `total_harga`, `biaya_admin`, `metode_pembayaran`, `status_pembayaran`, `created_at`, `updated_at`) VALUES
-(1, 1, '2025-11-30 20:06:06', 289000.00, 1000.00, 'BCA Virtual Account', 'lunas', '2025-11-30 13:06:06', '2025-11-30 13:06:06');
+(1, 1, '2025-12-17 02:46:57', 274000.00, 0.00, 'Cash', 'lunas', '2025-12-16 19:46:57', '2025-12-16 19:46:57');
 
 -- --------------------------------------------------------
 
@@ -498,13 +560,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Estha Gusti', 'estha', NULL, NULL, '$2y$12$wYzv4c7GjCBG6muzPvN3cevwMegJD0N2ELli51g5gMsE.jwSgKUbq', 'user', NULL, '2025-11-30 13:06:05', '2025-11-30 13:06:05'),
-(2, 'Administrator', 'admin', NULL, NULL, '$2y$12$uzoYWCXYvx/5juxPCOXkeuNnODbSNZxfUrzlnBIPVsAeFh1sIGvki', 'admin', NULL, '2025-11-30 13:06:06', '2025-11-30 13:06:06'),
-(3, 'Gusti', 'Gusti', NULL, NULL, '$2y$12$BY.N3MhxaqhTik.cjK493uzxx1m0yf643.sFhK8z58UONEufPSqvi', 'user', NULL, '2025-11-30 13:24:57', '2025-11-30 13:24:57'),
-(4, 'fatma', 'fatma', NULL, NULL, '$2y$12$yuSQxoZmOlZ14RbMZYZQwupSCtEjiiMwU8xWcXJ1utfF0MUbBzGkm', 'user', NULL, '2025-12-02 04:09:22', '2025-12-02 04:09:22'),
-(5, 'Michael', 'Michael', NULL, NULL, '$2y$12$b2mqwIwZmejvTkeH.keyc.LUNqU8b.FEa9fgQUnF93qy0JAg7yJOO', 'user', NULL, '2025-12-03 01:25:42', '2025-12-03 01:25:42'),
-(6, 'Andre', 'Andre', NULL, NULL, '$2y$12$3ZbxGt.bZp1xzOtX3913Xejnw40ZKi5O.4wjWD2hsuTRqJiaY3266', 'user', NULL, '2025-12-03 01:53:04', '2025-12-03 01:53:04'),
-(7, 'Bili', 'Bili', NULL, NULL, '$2y$12$U0lenr3hioInvICzYKq9suxgmE1hm8cyUacVvCkDdsMtqlyFKOZsO', 'user', NULL, '2025-12-05 09:53:10', '2025-12-05 09:53:10');
+(1, 'Estha Gusti', 'estha', 'estha@gmail.com', NULL, '$2y$12$FBwI3EblZntmXFq7h8cNguseIgFZwjLEq9UUrxRhqlWnXxVAh4ule', 'user', NULL, '2025-12-16 19:46:57', '2025-12-16 19:46:57'),
+(2, 'Administrator', 'admin', 'admin@axera.com', NULL, '$2y$12$14nEYTu2xNeV74c/IVLNxOwK1UVAnhdtUf0nbuwYwOS6ze9dhM/0C', 'admin', NULL, '2025-12-16 19:46:57', '2025-12-16 19:46:57'),
+(3, 'Esta', 'Esta', NULL, NULL, '$2y$12$ke78GLKgSHS5Ewn3wZwAvOQxFTaEMzURc6BJyLiPkLdq910ClBtRS', 'user', NULL, '2025-12-16 19:49:37', '2025-12-16 19:49:37');
 
 --
 -- Indexes for dumped tables
@@ -586,6 +644,18 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `montirs`
+--
+ALTER TABLE `montirs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `motors`
+--
+ALTER TABLE `motors`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `oli`
 --
 ALTER TABLE `oli`
@@ -616,6 +686,12 @@ ALTER TABLE `pelanggans`
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id`),
   ADD KEY `produk_id_kategori_foreign` (`id_kategori`);
+
+--
+-- Indexes for table `servis`
+--
+ALTER TABLE `servis`
+  ADD PRIMARY KEY (`idServis`);
 
 --
 -- Indexes for table `sessions`
@@ -653,19 +729,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `ban`
 --
 ALTER TABLE `ban`
-  MODIFY `idBan` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idBan` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `booking_servis`
 --
 ALTER TABLE `booking_servis`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `detail_transaksi`
@@ -701,7 +777,19 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `montirs`
+--
+ALTER TABLE `montirs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `motors`
+--
+ALTER TABLE `motors`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `oli`
@@ -713,19 +801,25 @@ ALTER TABLE `oli`
 -- AUTO_INCREMENT for table `pegawais`
 --
 ALTER TABLE `pegawais`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pelanggans`
 --
 ALTER TABLE `pelanggans`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `servis`
+--
+ALTER TABLE `servis`
+  MODIFY `idServis` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `spareparts`
@@ -743,7 +837,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -759,7 +853,7 @@ ALTER TABLE `carts`
 -- Constraints for table `pelanggans`
 --
 ALTER TABLE `pelanggans`
-  ADD CONSTRAINT `pelanggans_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `pelanggans_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `produk`

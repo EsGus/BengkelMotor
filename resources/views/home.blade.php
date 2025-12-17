@@ -24,11 +24,6 @@
             </div>
         </a>
 
-        <div class="search-wrapper">
-            <input type="text" class="search-bar" placeholder="Cari sparepart, oli, atau layanan...">
-            <button class="search-btn"><i class="fas fa-search"></i></button>
-        </div>
-
         <nav class="nav-links">
             <a href="{{ route('service.form') }}" class="menu-item">Booking Servis</a>
             <a href="{{ route('pegawai.index') }}" class="menu-item">Info Bengkel</a>
