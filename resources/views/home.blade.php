@@ -168,7 +168,7 @@
             <h3>Metode Pembayaran</h3>
             <div class="footer-logos">
                 <div class="logo-box" title="BCA"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA"></div>
-                <div class="logo-box" title="BNI"><img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1200px-BNI_logo.svg.png" alt="BNI"></div>
+                <div class="logo-box" title="BNI"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/BNI_logo.svg/512px-BNI_logo.svg.png" alt="BNI"></div>
                 <div class="logo-box" title="BRI"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/1200px-BANK_BRI_logo.svg.png" alt="BRI"></div>
                 <div class="logo-box" title="Mandiri"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" alt="Mandiri"></div>
                 <div class="logo-box qris"><span>QRIS</span></div>

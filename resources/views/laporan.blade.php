@@ -1,110 +1,44 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Keuangan</title>
     <link rel="stylesheet" href="{{ asset('css/dataPegawai.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
         .summary-box { display: flex; gap: 20px; margin: 20px 0; }
         .card { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        
-        /* Styling Tabel */
-        table { border-collapse: collapse; width: 100%; background: white; }
-        th, td { border: 1px solid #ddd; padding: 12px; }
-        th { background-color: #f2f2f2; text-align: left; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f1f1; }
     </style>
 </head>
+
 <body>
-    <div class="container" style="padding:20px; max-width: 1200px; margin: 0 auto;">
+    <div class="container" style="padding:20px;">
+        <a href="{{ route('home') }}">⬅ Kembali ke Home</a>
+        <h1>📊 Laporan Keuangan</h1>
         
-        <div style="margin-bottom: 20px;">
-            <a href="{{ route('home') }}" style="text-decoration: none; color: #555; font-weight: bold;">
-                <i class="fas fa-arrow-left"></i> Kembali ke Home
-            </a>
-            <h1>📊 Laporan Keuangan</h1>
-        </div>
-        
-        <form method="GET" action="{{ route('laporan.index') }}" style="background:white; padding:15px; border-radius:8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-            <div>
-                <label>Dari:</label> 
-                <input type="date" name="start_date" value="{{ $startDate }}" style="padding: 5px;">
-            </div>
-            <div>
-                <label>Sampai:</label> 
-                <input type="date" name="end_date" value="{{ $endDate }}" style="padding: 5px;">
-            </div>
-            
-            <button type="submit" style="background:#ff8a00; border:none; color:white; padding:7px 15px; border-radius:4px; cursor: pointer;">
-                <i class="fas fa-filter"></i> Filter
-            </button>
-            <button type="button" onclick="window.print()" style="background: #333; color: white; border: none; padding: 7px 15px; border-radius: 4px; cursor: pointer;">
-                <i class="fas fa-print"></i> Cetak PDF
-            </button>
+        <form method="GET" action="{{ route('laporan.index') }}" style="background:white; padding:15px; border-radius:8px;">
+            <label>Dari:</label> <input type="date" name="start_date" value="{{ substr($startDate,0,10) }}">
+            <label>Sampai:</label> <input type="date" name="end_date" value="{{ substr($endDate,0,10) }}">
+            <button type="submit" style="background:#ff8a00; border:none; color:white; padding:5px 15px; border-radius:4px;">Filter</button>
+            <button type="button" onclick="window.print()" style="margin-left:10px;">Cetak PDF</button>
         </form>
 
         <div class="summary-box">
-            <div class="card">
-                <h3>Pendapatan Toko</h3>
-                <h2 style="color: blue;">Rp {{ number_format($pendapatanToko, 0, ',', '.') }}</h2>
-            </div>
-            <div class="card">
-                <h3>Pendapatan Servis</h3>
-                <h2 style="color: orange;">Rp {{ number_format($pendapatanServis, 0, ',', '.') }}</h2>
-            </div>
-            <div class="card" style="background:#e8f5e9; border: 1px solid #c8e6c9;">
-                <h3>GRAND TOTAL</h3>
-                <h2 style="color:green;">Rp {{ number_format($grandTotal, 0, ',', '.') }}</h2>
-            </div>
+            <div class="card"><h3>Pendapatan Toko</h3><h2>Rp {{ number_format($totalPenjualan) }}</h2></div>
+            <div class="card"><h3>Pendapatan Servis</h3><h2>Rp {{ number_format($totalServis) }}</h2></div>
+            <div class="card" style="background:#e8f5e9;"><h3>GRAND TOTAL</h3><h2 style="color:green;">Rp {{ number_format($grandTotal) }}</h2></div>
         </div>
 
-        <div style="margin-top: 30px;">
-            <h3>Rincian Transaksi (Gabungan)</h3>
-            <div style="overflow-x: auto;">
-                <table width="100%">
-                    <thead>
-                        <tr>
-                            <th>Tanggal & Waktu</th>
-                            <th>Sumber Pemasukan</th>
-                            <th>Keterangan</th>
-                            <th style="text-align:right;">Nominal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($dataLaporan as $row)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::parse($row['tanggal'])->translatedFormat('d F Y H:i') }}</td>
-                            
-                            <td>
-                                @if($row['sumber'] == 'Toko Online')
-                                    <span style="background: #e7f1ff; color: #0d6efd; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.9em;">Toko Online</span>
-                                @else
-                                    <span style="background: #fff3cd; color: #ffc107; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.9em; color: #856404;">Bengkel Servis</span>
-                                @endif
-                            </td>
-                            
-                            <td>{{ $row['keterangan'] }}</td>
-                            
-                            <td style="text-align:right; font-family: monospace; font-size: 1.1em;">
-                                Rp {{ number_format($row['nominal'], 0, ',', '.') }}
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" style="text-align:center; padding: 30px; color: #777;">
-                                <i class="fas fa-info-circle"></i> Tidak ada transaksi pada periode tanggal ini.
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        <h3>Rincian Transaksi</h3>
+        <table border="1" cellspacing="0" cellpadding="10" width="100%" style="background:white; border-collapse:collapse;">
+            <thead><tr style="background:#ddd;"><th>Tanggal</th><th>Sumber</th><th>Keterangan</th><th>Nominal</th></tr></thead>
+            <tbody>
+                @foreach($penjualan as $p)
+                <tr><td>{{ $p->tanggal_transaksi }}</td><td>Toko Online</td><td>Inv #{{ $p->id }}</td><td align="right">Rp {{ number_format($p->total_harga) }}</td></tr>
+                @endforeach
+                @foreach($servis as $s)
+                <tr><td>{{ $s->tanggalServis }}</td><td>Bengkel Servis</td><td>Servis ID #{{ $s->idServis }}</td><td align="right">Rp {{ number_format($s->totalHarga) }}</td></tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
