@@ -101,7 +101,7 @@ class ServisController extends Controller
         // D. Kirim Request ke Fonnte
         try {
             Http::withHeaders([
-                'Authorization' => 'DssdiQZsQbueqmDeZ7FW', // <--- GANTI TOKEN INI !!!
+                'Authorization' => 'xML4MqbSi4YYNUpUMjXG', // <--- GANTI TOKEN INI !!!
             ])->post('https://api.fonnte.com/send', [
                 'target' => $target,
                 'message' => $pesan,
