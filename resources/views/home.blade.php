@@ -149,7 +149,7 @@
                 <li><a href="#">Cara Pembelian</a></li>
                 <li><a href="#">Lacak Pesanan</a></li>
                 <li><a href="#">Garansi Servis</a></li>
-                <li><a href="#">Hubungi Kami</a></li>
+                <li><a href="{{ route('hubungi') }}">Hubungi Kami</a></li>
             </ul>
         </div>
 

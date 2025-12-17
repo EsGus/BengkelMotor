@@ -121,4 +121,4 @@ Route::get('/payment/success', [AuthController::class, 'paymentSuccess'])
     ->name('payment.success');
 
 Route::view('/tentang', 'tentang')->name('tentang');
-
+Route::view('/hubungi', 'hubungi')->name('hubungi');
