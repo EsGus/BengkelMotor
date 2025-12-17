@@ -119,3 +119,6 @@ Route::post('/payment/process', [AuthController::class, 'processPayment'])
 
 Route::get('/payment/success', [AuthController::class, 'paymentSuccess'])
     ->name('payment.success');
+
+Route::view('/tentang', 'tentang')->name('tentang');
+
