@@ -124,7 +124,7 @@
         </a>
 
         <a href="{{ route('oli') }}" class="service-box">
-            <img src="{{ asset('img/oli4.png') }}" alt="Oli" onerror="this.src='https://cdn-icons-png.flaticon.com/512/798/798867.png'">
+            <img src="{{ asset('img/oli.png') }}" alt="Oli" onerror="this.src='https://cdn-icons-png.flaticon.com/512/798/798867.png'">
             <p>Oli Mesin</p>
         </a>
 
@@ -148,7 +148,7 @@
                 <li><a href="#">Bantuan</a></li>
                 <li><a href="#">Cara Pembelian</a></li>
                 <li><a href="#">Lacak Pesanan</a></li>
-                <li><a href="#">Garansi Servis</a></li>
+                <li><a href="{{ route('garansi') }}">Garansi Servis</a></li>
                 <li><a href="{{ route('hubungi') }}">Hubungi Kami</a></li>
             </ul>
         </div>
