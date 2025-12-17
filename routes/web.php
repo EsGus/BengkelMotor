@@ -123,3 +123,4 @@ Route::get('/payment/success', [AuthController::class, 'paymentSuccess'])
 Route::view('/tentang', 'tentang')->name('tentang');
 Route::view('/hubungi', 'hubungi')->name('hubungi');
 Route::view('/garansi', 'garansi')->name('garansi');
+Route::view('/karir', 'karir')->name('karir');

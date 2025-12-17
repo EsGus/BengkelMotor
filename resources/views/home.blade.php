@@ -157,7 +157,7 @@
             <h3>Jelajahi Axera</h3>
             <ul>
                 <li><a href="{{ route('tentang') }}">Tentang Kami</a></li>
-                <li><a href="#">Karir</a></li>
+                <li><a href="{{ route('karir') }}">Karir</a></li>
                 <li><a href="#">Kebijakan Privasi</a></li>
                 <li><a href="#">Blog Otomotif</a></li>
                 <li><a href="#">Mitra Bengkel</a></li>
