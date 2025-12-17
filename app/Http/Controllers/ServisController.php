@@ -7,6 +7,7 @@ use App\Models\Motor;
 use App\Models\Montir;
 use App\Models\Sparepart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http; // <--- WAJIB ADA: Untuk kirim request ke Fonnte
 
 class ServisController extends Controller
 {
@@ -25,7 +26,7 @@ class ServisController extends Controller
         return view('servis_tambah', compact('motor', 'montir', 'sparepart'));
     }
 
-    // UPDATE PENTING DI SINI (SUDAH DIPERBAIKI)
+    // UPDATE PENTING DI SINI
     public function store(Request $request)
     {
         $request->validate([
@@ -52,25 +53,65 @@ class ServisController extends Controller
             'keluhan'        => $request->keluhan
         ]);
 
-        // 2. Logika Kurangi Stok Sparepart (Jika ada sparepart yg dipilih)
+        // 2. Logika Kurangi Stok Sparepart
         if ($request->idSparepart && $request->jumlahSparepart > 0) {
             $part = Sparepart::find($request->idSparepart);
             
             if ($part) {
-                // Cek apakah stok cukup?
                 if ($part->stok < $request->jumlahSparepart) {
-                    // Batalkan servis jika stok kurang (Opsional, hapus data servis yg baru dibuat)
                     $servis->delete(); 
                     return back()->with('error', 'Stok sparepart tidak cukup!');
                 }
-
-                // Kurangi stok
                 $part->stok = $part->stok - $request->jumlahSparepart;
                 $part->save();
             }
         }
 
-        return redirect()->route('servis.index')->with('success', 'Servis dicatat & Stok sparepart berkurang.');
+        // ==========================================
+        // 3. LOGIKA KIRIM NOTA WA (FONNTE)
+        // ==========================================
+        
+        // A. Format Nomor HP (08xx -> 628xx)
+        $target = $request->no_hp;
+        if (substr($target, 0, 1) == '0') {
+            $target = '62' . substr($target, 1);
+        }
+
+        // B. Ambil Nama Motor (Manual query karena $request->idMotor cuma ID)
+        $namaMotor = 'Motor Tidak Diketahui';
+        $motorData = Motor::find($request->idMotor);
+        if($motorData) {
+            $namaMotor = $motorData->nama_motor . ' (' . $motorData->tipe_motor . ')';
+        }
+
+        // C. Susun Pesan
+        $pesan = "*NOTA SERVIS - AXERA MOTOR*\n";
+        $pesan .= "--------------------------------\n";
+        $pesan .= "Halo, " . $request->nama_pelanggan . "!\n";
+        $pesan .= "Terima kasih telah melakukan servis.\n\n";
+        $pesan .= "🗓 Tgl: " . date('d-m-Y H:i') . "\n";
+        $pesan .= "🏍 Motor: " . $namaMotor . "\n";
+        $pesan .= "🔧 Keluhan: " . $request->keluhan . "\n";
+        $pesan .= "--------------------------------\n";
+        $pesan .= "💰 *TOTAL: Rp " . number_format($request->totalHarga, 0, ',', '.') . "*\n";
+        $pesan .= "--------------------------------\n";
+        $pesan .= "Simpan pesan ini sebagai bukti pembayaran.\n";
+        $pesan .= "~ Axera Motor Official";
+
+        // D. Kirim Request ke Fonnte
+        try {
+            Http::withHeaders([
+                'Authorization' => 'DssdiQZsQbueqmDeZ7FW', // <--- GANTI TOKEN INI !!!
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $target,
+                'message' => $pesan,
+            ]);
+        } catch (\Exception $e) {
+            // Jika error koneksi, biarkan saja agar aplikasi tidak crash
+        }
+        // ==========================================
+
+        return redirect()->route('servis.index')->with('success', 'Servis dicatat & Nota WA Terkirim.');
     }
 
     public function destroy($id)
@@ -80,7 +121,7 @@ class ServisController extends Controller
         return redirect()->route('servis.index')->with('success', 'Data servis dihapus.');
     }
 
-    // FITUR CETAK NOTA
+    // FITUR CETAK NOTA (PDF/Print Biasa)
     public function cetakNota($id)
     {
         $servis = Servis::with(['motor', 'montir', 'sparepart'])->findOrFail($id);
